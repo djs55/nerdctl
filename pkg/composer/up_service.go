@@ -131,6 +131,7 @@ func (c *Composer) upServiceContainer(ctx context.Context, service *serviceparse
 	container.RunArgs = append([]string{
 		fmt.Sprintf("-l=%s=%s", labels.ComposeProject, c.Options.Project),
 		fmt.Sprintf("-l=%s=%s", labels.ComposeService, service.Unparsed.Name),
+		"--net", "host",
 	}, container.RunArgs...)
 
 	cmd := c.createNerdctlCmd(ctx, append([]string{"run"}, container.RunArgs...)...)

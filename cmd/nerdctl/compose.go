@@ -25,9 +25,9 @@ import (
 	refdocker "github.com/containerd/containerd/reference/docker"
 	"github.com/containerd/nerdctl/pkg/composer"
 	"github.com/containerd/nerdctl/pkg/imgutil"
-	"github.com/containerd/nerdctl/pkg/netutil"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli/v2"
+	"github.com/sirupsen/logrus"
 )
 
 var composeCommand = &cli.Command{
@@ -80,22 +80,9 @@ func getComposer(clicontext *cli.Context, client *containerd.Client) (*composer.
 	if file := clicontext.String("file"); file != "" {
 		o.ProjectOptions.ConfigPaths = append([]string{file}, o.ProjectOptions.ConfigPaths...)
 	}
-	cniEnv := &netutil.CNIEnv{
-		Path:        clicontext.String("cni-path"),
-		NetconfPath: clicontext.String("cni-netconfpath"),
-	}
-	configLists, err := netutil.ConfigLists(cniEnv)
-	if err != nil {
-		return nil, err
-	}
-
 	o.NetworkExists = func(netName string) (bool, error) {
-		for _, f := range configLists {
-			if f.Name == netName {
-				return true, nil
-			}
-		}
-		return false, nil
+		logrus.Infof("assuming network %s exists", netName)
+		return true, nil
 	}
 
 	volStore, err := getVolumeStore(clicontext)

@@ -16,8 +16,6 @@
 
 package nettype
 
-import "github.com/pkg/errors"
-
 type Type int
 
 const (
@@ -28,28 +26,5 @@ const (
 )
 
 func Detect(names []string) (Type, error) {
-	var res Type
-
-	for _, name := range names {
-		var tmp Type
-		switch name {
-		case "none":
-			tmp = None
-		case "host":
-			tmp = Host
-		default:
-			tmp = CNI
-		}
-		if res != Invalid && res != tmp {
-			return Invalid, errors.Errorf("mixed network types: %v and %v", res, tmp)
-		}
-		res = tmp
-	}
-
-	// defaults to CNI
-	if res == Invalid {
-		res = CNI
-	}
-
-	return res, nil
+	return Host, nil
 }

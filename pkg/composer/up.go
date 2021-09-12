@@ -35,11 +35,14 @@ type UpOptions struct {
 }
 
 func (c *Composer) Up(ctx context.Context, uo UpOptions) error {
+	logrus.Infof("skipping CNI networks")
+	/*
 	for shortName := range c.project.Networks {
 		if err := c.upNetwork(ctx, shortName); err != nil {
 			return err
 		}
 	}
+	*/
 
 	for shortName := range c.project.Volumes {
 		if err := c.upVolume(ctx, shortName); err != nil {

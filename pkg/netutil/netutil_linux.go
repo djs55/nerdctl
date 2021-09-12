@@ -17,7 +17,7 @@
 package netutil
 
 const (
-	DefaultNetworkName = "bridge"
+	DefaultNetworkName = "host"
 	DefaultID          = 0
 	DefaultCIDR        = "10.4.0.0/24"
 )
